@@ -5,9 +5,9 @@ import { QueryError } from 'mysql2';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import packageInfo from '../../../../package.json';
 
-import { TranslateModule } from '@ngx-translate/core';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
+import { BsDropdownDirective, BsDropdownMenuDirective, BsDropdownToggleDirective } from 'ngx-bootstrap/dropdown';
+import { TooltipDirective } from 'ngx-bootstrap/tooltip';
 
 import { QueryErrorComponent } from '@keira/shared/base-editor-components';
 import { ElectronService } from '@keira/shared/common-services';
@@ -24,9 +24,12 @@ import { ModelForm, SubscriptionHandler } from '@keira/shared/utils';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    BsDropdownModule,
-    TranslateModule,
-    TooltipModule,
+    BsDropdownDirective,
+    BsDropdownToggleDirective,
+    BsDropdownMenuDirective,
+    TranslateDirective,
+    TranslatePipe,
+    TooltipDirective,
     QueryErrorComponent,
     SwitchLanguageComponent,
   ],

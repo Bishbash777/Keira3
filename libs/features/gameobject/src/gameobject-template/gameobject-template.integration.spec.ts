@@ -11,7 +11,7 @@ import { KEIRA_APP_CONFIG_TOKEN, KEIRA_MOCK_CONFIG } from '@keira/shared/config'
 import { MysqlQueryService, SqliteService } from '@keira/shared/db-layer';
 import { Model3DViewerService } from '@keira/shared/model-3d-viewer';
 import { EditorPageObject, TranslateTestingModule } from '@keira/shared/test-utils';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { of } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
@@ -43,7 +43,7 @@ describe('GameobjectTemplate integration tests', () => {
     TestBed.configureTestingModule({
       imports: [
         ToastrModule.forRoot(),
-        ModalModule.forRoot(),
+        ModalDirective,
         GameobjectTemplateComponent,
         RouterTestingModule,
         TranslateTestingModule,
@@ -171,6 +171,16 @@ describe('GameobjectTemplate integration tests', () => {
       page.expectDiffQueryToContain("UPDATE `gameobject_template` SET `name` = 'Helias', `Data0` = 35 WHERE (`entry` = " + id + ');');
       page.expectFullQueryToContain('Helias');
       page.expectFullQueryToContain('35');
+    });
+
+    it('should only render the info tooltip icon for data fields with a non-empty tooltip', () => {
+      const { fixture } = setup(false);
+      const getDataFieldIcon = (index: number) =>
+        fixture.nativeElement.querySelector(`#Data${index}`).closest('.form-group').querySelector('i.fa-info-circle');
+
+      // type 0: Data0 (startOpen) has a real tooltip, Data4 (openTextID) maps to the empty 'EMPTY' tooltip
+      expect(getDataFieldIcon(0)).toBeTruthy();
+      expect(getDataFieldIcon(4)).toBeFalsy();
     });
 
     it.skip('changing a value via SingleValueSelector should correctly work', async () => {

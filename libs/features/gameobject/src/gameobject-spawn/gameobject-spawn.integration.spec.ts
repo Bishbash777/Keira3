@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MysqlQueryService, SqliteQueryService, SqliteService } from '@keira/shared/db-layer';
 import { MultiRowEditorPageObject, TranslateTestingModule } from '@keira/shared/test-utils';
 import { GameobjectSpawn } from '@keira/shared/acore-world-model';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { of } from 'rxjs';
 import { GameobjectHandlerService } from '../gameobject-handler.service';
@@ -29,7 +29,7 @@ describe('GameobjectSpawn integration tests', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ToastrModule.forRoot(), ModalModule.forRoot(), GameobjectSpawnComponent, RouterTestingModule, TranslateTestingModule],
+      imports: [ToastrModule.forRoot(), ModalDirective, GameobjectSpawnComponent, RouterTestingModule, TranslateTestingModule],
       providers: [
         provideZonelessChangeDetection(),
         provideNoopAnimations(),
@@ -50,6 +50,9 @@ describe('GameobjectSpawn integration tests', () => {
     const querySpy = vi.spyOn(queryService, 'query').mockReturnValue(of([]));
 
     vi.spyOn(queryService, 'selectAll').mockReturnValue(of(creatingNew ? [] : [originalRow0, originalRow1, originalRow2]));
+    const sqliteQueryService = TestBed.inject(SqliteQueryService);
+    vi.spyOn(sqliteQueryService, 'getAllWorldMapAreas').mockResolvedValue([]);
+    vi.spyOn(sqliteQueryService, 'getAllWorldMapOverlays').mockResolvedValue([]);
 
     const fixture = TestBed.createComponent(GameobjectSpawnComponent);
     const page = new GameobjectSpawnPage(fixture);
@@ -463,6 +466,20 @@ describe('GameobjectSpawn integration tests', () => {
           "(1, 1234, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, ''),\n" +
           "(2, 1234, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, '');",
       );
+    });
+
+    it('clicking a map pin should select the matching spawn row', () => {
+      const { fixture } = setup(false);
+      const component = fixture.componentInstance;
+      const selectSpy = vi.spyOn(component['editorService'], 'onRowSelection');
+
+      component.onMapPinClick({ mapId: 0, x: 0, y: 0, guid: 2 });
+      expect(selectSpy).toHaveBeenCalledTimes(1);
+      expect(component['editorService'].selectedRowId).toBe(2);
+
+      selectSpy.mockClear();
+      component.onMapPinClick({ mapId: 0, x: 0, y: 0, guid: 999 });
+      expect(selectSpy).not.toHaveBeenCalled();
     });
   });
 });

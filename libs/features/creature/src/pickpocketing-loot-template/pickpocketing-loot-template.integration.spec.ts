@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MysqlQueryService, SqliteService } from '@keira/shared/db-layer';
 import { MultiRowEditorPageObject, TranslateTestingModule } from '@keira/shared/test-utils';
 import { PickpocketingLootTemplate } from '@keira/shared/acore-world-model';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { of } from 'rxjs';
 import { CreatureHandlerService } from '../creature-handler.service';
@@ -30,13 +30,7 @@ describe('PickpocketingLootTemplate integration tests', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ToastrModule.forRoot(),
-        ModalModule.forRoot(),
-        PickpocketingLootTemplateComponent,
-        RouterTestingModule,
-        TranslateTestingModule,
-      ],
+      imports: [ToastrModule.forRoot(), ModalDirective, PickpocketingLootTemplateComponent, RouterTestingModule, TranslateTestingModule],
       providers: [
         provideZonelessChangeDetection(),
         provideNoopAnimations(),
@@ -317,8 +311,6 @@ describe('PickpocketingLootTemplate integration tests', () => {
   it('should correctly show the warning if the loot id is not correctly set in the creature template', () => {
     const { page } = setup(true, 0);
 
-    expect(page.query('.alert-info').innerText).toContain(
-      'You have to set the field `pickpocketloot` of creature_template in order to enable this feature.',
-    );
+    expect(page.query('.alert-info').innerText).toContain('LOOT_TEMPLATE.SET_FIELD');
   });
 });

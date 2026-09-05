@@ -1,5 +1,4 @@
 import { vi } from 'vitest';
-import { CommonModule } from '@angular/common';
 import { NgModule, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -7,7 +6,7 @@ import { FormsModule, ReactiveFormsModule, UntypedFormControl } from '@angular/f
 import { BrowserModule } from '@angular/platform-browser';
 import { TranslateTestingModule } from '@keira/shared/test-utils';
 import { NgxDatatableModule } from '@siemens/ngx-datatable';
-import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { instance, mock } from 'ts-mockito';
 import { ItemSelectorBtnComponent } from '../item-selector/item-selector-btn.component';
 import { ItemSelectorModalComponent } from '../item-selector/item-selector-modal.component';
@@ -16,8 +15,7 @@ import { HighlightjsWrapperComponent } from '@keira/shared/base-editor-component
 
 @NgModule({
   imports: [
-    ModalModule.forRoot(),
-    CommonModule,
+    ModalDirective,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
@@ -35,7 +33,7 @@ describe('BaseSelectorBtnComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ModalModule.forRoot(), TestModule, ItemSelectorBtnComponent],
+      imports: [ModalDirective, TestModule, ItemSelectorBtnComponent],
     }).compileComponents();
   });
 

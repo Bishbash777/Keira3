@@ -181,6 +181,7 @@ export enum SAI_ACTIONS {
   DISABLE_REWARD = 238,
   SET_ANIM_TIER = 239,
   SET_GOSSIP_MENU = 240,
+  SUMMON_GAMEOBJECT_GROUP = 241,
   INC_DATA = 242,
 }
 export const SAI_ACTIONS_KEYS = getEnumKeys(SAI_ACTIONS);
@@ -394,6 +395,7 @@ SAI_ACTION_PARAM2_NAMES[SAI_ACTIONS.FOLLOW] = 'Angle';
 SAI_ACTION_PARAM3_NAMES[SAI_ACTIONS.FOLLOW] = 'EndCreatureId';
 SAI_ACTION_PARAM4_NAMES[SAI_ACTIONS.FOLLOW] = 'Credit';
 SAI_ACTION_PARAM5_NAMES[SAI_ACTIONS.FOLLOW] = 'CreditType';
+SAI_ACTION_PARAM6_NAMES[SAI_ACTIONS.FOLLOW] = 'AliveState';
 SAI_ACTION_PARAM3_TOOLTIPS[SAI_ACTIONS.FOLLOW] =
   'Default is 0. When not 0, the follow will finish ONLY once the creature is within interaction distance (5 yards) of the given entry.';
 SAI_ACTION_PARAM4_TOOLTIPS[SAI_ACTIONS.FOLLOW] =
@@ -401,6 +403,9 @@ SAI_ACTION_PARAM4_TOOLTIPS[SAI_ACTIONS.FOLLOW] =
 SAI_ACTION_PARAM5_TOOLTIPS[SAI_ACTIONS.FOLLOW] =
   'Determines how the value in parameter 4 is interpreted. ' +
   '0 = monster kill credit (calls RewardPlayerAndGroupAtEvent), 1 = event credit (calls GroupEventHappens).';
+SAI_ACTION_PARAM6_TOOLTIPS[SAI_ACTIONS.FOLLOW] =
+  'Controls whether the creature must be alive to count as arrived. ' +
+  '0 = creature must be alive, 1 = creature can be dead and still count as arrived.';
 
 // SMART_ACTION_RANDOM_PHASE
 SAI_ACTION_TOOLTIPS[SAI_ACTIONS.RANDOM_PHASE] = "Set the creature's event phase (note: this is NOT the creature's actual phase!)";
@@ -1128,7 +1133,7 @@ SAI_ACTION_TOOLTIPS[SAI_ACTIONS.NO_ENVIRONMENT_UPDATE] = 'NO_ENVIRONMENT_UPDATE'
 SAI_ACTION_TOOLTIPS[SAI_ACTIONS.ZONE_UNDER_ATTACK] = 'ZONE_UNDER_ATTACK';
 
 // SMART_ACTION_LOAD_GRID
-SAI_ACTION_TOOLTIPS[SAI_ACTIONS.LOAD_GRID] = 'LOAD_GRID';
+SAI_ACTION_TOOLTIPS[SAI_ACTIONS.LOAD_GRID] = 'Loads the grid at the target coordinates. Works for both creatures and game objects.';
 
 // SMART_ACTION_MUSIC
 SAI_ACTION_TOOLTIPS[SAI_ACTIONS.MUSIC] = 'MUSIC';
@@ -1334,6 +1339,13 @@ SAI_ACTION_PARAM1_TOOLTIPS[SAI_ACTIONS.SET_ANIM_TIER] = '0 = Ground, 1 = Swim, 2
 // SMART_ACTION_SET_GOSSIP_MENU
 SAI_ACTION_TOOLTIPS[SAI_ACTIONS.SET_GOSSIP_MENU] = 'Modifies the gossip menu ID of the target.';
 SAI_ACTION_PARAM1_NAMES[SAI_ACTIONS.SET_GOSSIP_MENU] = 'GossipMenuId';
+
+// SMART_ACTION_SUMMON_GAMEOBJECT_GROUP
+SAI_ACTION_TOOLTIPS[SAI_ACTIONS.SUMMON_GAMEOBJECT_GROUP] =
+  'Summons the gameobjects of the given group, as defined in `gameobject_summon_groups` for this summoner ' +
+  '(matched on summonerId and summonerType). Requires a base object, so it does nothing when the script has none.';
+SAI_ACTION_PARAM1_NAMES[SAI_ACTIONS.SUMMON_GAMEOBJECT_GROUP] = 'Group';
+SAI_ACTION_PARAM1_TOOLTIPS[SAI_ACTIONS.SUMMON_GAMEOBJECT_GROUP] = 'gameobject_summon_groups.groupId';
 
 // SMART_ACTION_INC_DATA
 SAI_ACTION_TOOLTIPS[SAI_ACTIONS.INC_DATA] =

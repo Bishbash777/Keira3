@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { PageObject, Spied, TranslateTestingModule } from '@keira/shared/test-utils';
 import { QueryError } from 'mysql2';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TooltipDirective } from 'ngx-bootstrap/tooltip';
 import { of, throwError } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 
@@ -94,7 +94,7 @@ describe('ConnectionWindowComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [TooltipModule.forRoot(), ConnectionWindowComponent, TranslateTestingModule],
+      imports: [TooltipDirective, ConnectionWindowComponent, TranslateTestingModule],
       providers: [
         provideZonelessChangeDetection(),
         provideNoopAnimations(),
@@ -224,7 +224,8 @@ describe('ConnectionWindowComponent', () => {
     const error = {
       code: 'some error happened',
       errno: 1000,
-      stack: 'some SQL error message',
+      message: 'some SQL error message',
+      stack: 'some SQL stack trace',
       sqlState: 'some SQL state',
     } as QueryError;
     connectSpy.mockReturnValue(throwError(error));
@@ -235,9 +236,17 @@ describe('ConnectionWindowComponent', () => {
     expect(component.error).toEqual(error);
     expect(page.errorElement.innerHTML).toContain('error-box');
     expect(page.errorElement.innerHTML).toContain(error.code);
-    expect(page.errorElement.innerHTML).toContain(error.stack as string);
+    expect(page.errorElement.innerHTML).toContain(error.message as string);
     expect(page.errorElement.innerHTML).toContain(error.sqlState as string);
     expect(page.errorElement.innerHTML).toContain(`${error.errno}`);
+
+    // by default the stack trace is hidden behind the trace toggle
+    expect(page.errorElement.innerHTML).not.toContain(error.stack as string);
+
+    page.clickElement(page.query<HTMLButtonElement>('keira-query-error button'));
+
+    expect(page.errorElement.innerHTML).toContain(error.stack as string);
+    expect(page.errorElement.innerHTML).not.toContain(error.message as string);
   });
 
   describe('the save checkbox', () => {

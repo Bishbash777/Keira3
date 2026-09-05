@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MysqlQueryService, SqliteService } from '@keira/shared/db-layer';
 import { MultiRowEditorPageObject, TranslateTestingModule } from '@keira/shared/test-utils';
 import { DisenchantLootTemplate } from '@keira/shared/acore-world-model';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { of } from 'rxjs';
 import { ItemHandlerService } from '../item-handler.service';
@@ -29,13 +29,7 @@ describe('DisenchantLootTemplate integration tests', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ToastrModule.forRoot(),
-        ModalModule.forRoot(),
-        DisenchantLootTemplateComponent,
-        RouterTestingModule,
-        TranslateTestingModule,
-      ],
+      imports: [ToastrModule.forRoot(), ModalDirective, DisenchantLootTemplateComponent, RouterTestingModule, TranslateTestingModule],
       providers: [
         provideZonelessChangeDetection(),
         provideNoopAnimations(),
@@ -315,8 +309,6 @@ describe('DisenchantLootTemplate integration tests', () => {
   it('should correctly show the warning if the loot id is not correctly set in the item template', () => {
     const { page } = setup(true, 0);
 
-    expect(page.query('.alert-info').innerText).toContain(
-      'You have to set the field `DisenchantID` of item_template in order to enable this feature.',
-    );
+    expect(page.query('.alert-info').innerText).toContain('LOOT_TEMPLATE.SET_FIELD');
   });
 });

@@ -107,7 +107,8 @@
       "CREATURE_QUESTSTARTER": "Criatura para Iniciar la Misión",
       "CREATURE_QUESTENDER": "Criatura para Finalizar la Misión",
       "GAMEOBJECT_QUESTSTARTER": "Objeto del Juego para Iniciar la Misión",
-      "GAMEOBJECT_QUESTENDER": "Objeto del Juego para Finalizar la Misión"
+      "GAMEOBJECT_QUESTENDER": "Objeto del Juego para Finalizar la Misión",
+      "QUEST_CHAIN": "Cadena de Misiones"
     },
     "GAME_OBJECT": {
       "TITLE": "Objeto del Juego",
@@ -213,7 +214,9 @@
     "TOOLTIP": "Un editor SQL minimalista para ejecutar consultas personalizadas",
     "EXECUTE": "Ejecutar (F9)",
     "LEARN_SQL": "Aprenda el Lenguaje SQL",
-    "AFFECTED_ROWS": "Líneas afectadas:"
+    "AFFECTED_ROWS": "Líneas afectadas:",
+    "HIDE_TRACE": "Ocultar traza",
+    "SHOW_TRACE": "Mostrar traza"
   },
   "CREATURE": {
     "TEMPLATE": {
@@ -321,7 +324,10 @@
       "EMOTE": "La animación que la criatura reproduce cuando se ejecuta el texto. El valor a usar en este campo se puede obtener de emote.dbc",
       "DURATION": "Tiempo en ms para ver el texto. 0 es el valor predeterminado y es calculado por el core.",
       "SOUND": "La entrada de sonido que esta criatura reproducirá al mismo tiempo que se ejecuta el texto. Los sonidos se encuentran en SoundEntries.dbc.",
-      "BROADCAST_TEXT_ID": "ID del texto equivalente encontrado en broadcast_text"
+      "BROADCAST_TEXT_ID": "ID del texto equivalente encontrado en broadcast_text",
+      "SEARCH_BROADCAST_TEXT": "Buscar en MaleText o FemaleText",
+      "COPY_TO_ROW": "Copiar a la fila seleccionada",
+      "MATCHED_ROW": "La fila que coincidió con tu búsqueda"
     }
   },
   "QUEST": {
@@ -376,6 +382,7 @@
       "ALLOWABLE_CLASSES": "Utilice el valor 0 para permitir a todas las clases del juego obtenerla",
       "SOURCE_SPELL_ID": "El Identificador (ID) del Hechizo que será lanzado sobre el jugador al momento de aceptar la Misión.",
       "EXCLUSIVE_GROUP": "Sí es > (mayor que) 0, vendría a ser el Grupo de Misiones en las cuales solamente puede elegirse y ser completada una de ellas; Sí es (menor que) < 0, sería el Grupo de Misiones de las cuales todas deberían de ser completadas y recompensadas respectivamente para iniciar con la siguiente Misión.",
+      "BREADCRUMB_FOR_QUEST_ID": "Esta misión es una migaja opcional que dirige al jugador hacia la misión indicada. Las migajas pueden encadenarse, pero no deben formar un bucle ni definir además NextQuestID o ExclusiveGroup.",
       "PROVIDED_ITEM_COUNT": "Número de Items entregados al jugador (Insertados en las Bolsas del mismo) al momento de aceptar la Misión.",
       "REQ_SKILL_ID": "Habilidad requerida para permitirle a un jugador cualquiera aceptar la Misión dentro del juego. Utilice 0 como valor por defecto si no requiere de una habilidad para obtenerla.",
       "REQ_SKILL_POINTS": "Puntos de Habilidad necesarios para aceptar la Misión.",
@@ -392,6 +399,21 @@
       "COMPLETION_TEXT": "Ventana de Texto de Misión, mostrada en la Ventana de Diálogo (Gossip) final al momento de entregar una Misión, en la que sí habría una entrega de Items por parte del jugador.",
       "EMOTE_ON_COMPLETE": "Emoción mostrada por el PNJ que finalizará la Misión, al momento en el que se hayan completado con todos los Objetivos respectivos de la misma.",
       "EMOTE_ON_INCOMPLETE": "Emoción mostrada por el PNJ, al momento en el que NO se hayan completado con todos los Objetivos respectivos de la misma."
+    },
+    "CHAIN": {
+      "TITLE": "Cadena de Misiones",
+      "STANDALONE": "Esta misión no está vinculada a ninguna otra misión.",
+      "TRUNCATED": "Esta cadena es demasiado grande para mostrarse por completo; solo se muestra una parte.",
+      "LEGEND_CHAIN": "Debe completarse primero",
+      "LEGEND_ENABLED_BY": "Debe estar disponible (habilitada por)",
+      "LEGEND_BREADCRUMB": "Misión guía que conduce a",
+      "LEGEND_CONDITION": "Requerido por una condición",
+      "LEGEND_CONDITION_ANY": "Alternativa de condición (cualquiera de ellas)",
+      "LEGEND_MISSING": "Ausente en quest_template",
+      "LEGEND_CONDITIONS": "Tiene condiciones de disponibilidad (clic para abrir)",
+      "BAND_ANY": "Una de estas ({{group}})",
+      "BAND_ALL": "Todas estas ({{group}})",
+      "CONDITIONS_TOOLTIP": "{{count}} condición(es) de disponibilidad — clic para abrirlas en el editor de Condiciones"
     }
   },
   "GAMEOBJECT": {
@@ -547,6 +569,10 @@
     "MAX_COUNT": "El Número Máximo de copias del Item que pueden aparecer en un sólo Botín individual. En el caso de las Referencias de Botín, este campo es el valor del recuento EXACTO.",
     "COMMENT": "Un comentario el cual ignora el emulador (usado para dejar anotaciones al respecto)"
   },
+  "LOOT_TEMPLATE": {
+    "SET_FIELD": "Debes establecer el campo <strong>`{{ LOOT_FIELD }}`</strong> de <strong>{{ ENTITY_TABLE }}</strong> para poder habilitar esta funcionalidad.",
+    "SET_FIELD_GO": "Debes establecer el campo <strong>`Data1` (lootid)</strong> y <strong>`type` (3 o 25)</strong> de <strong>{{ ENTITY_TABLE }}</strong> para poder habilitar esta funcionalidad."
+  },
   "OTHER_TEXTS": {
     "BROADCAST_TEXT": {
       "ID": "El ID único para el texto.",
@@ -595,7 +621,9 @@
       "SOURCE_ENTRY": "Fuente de Entrada:",
       "CREATE_NEW": "Crear nuevo",
       "PLACEHOLDER_SOURCE_GROUP": "GrupoOrigen",
-      "PLACEHOLDER_ENTRY": "EntradaOrigen"
+      "PLACEHOLDER_ENTRY": "EntradaOrigen",
+      "SOURCE_ID": "Id de origen:",
+      "PLACEHOLDER_SOURCE_ID": "IdOrigen"
     },
     "EDITOR": {
       "CONDITIONS_SOURCE": "Condición de Origen",
@@ -766,7 +794,10 @@
       "CHANCE": "Esta es la probabilidad de que ocurra el evento como porcentaje de 0 a 100. Ejemplo: Si deseas que el evento ocurra casi la mitad de las veces, entonces coloca el valor 50.",
       "TIMED_ACTIONLISTS": "Todos los smart_scripts que tengan source_type = 9 y entryorguid entre CreatureID * 100 y CreatureID * 100 + 100",
       "GENERATE_COMMENT": "Generar comentario",
-      "GENERATE_COMMENTS_ALL": "Generar comentarios (todos)"
+      "GENERATE_COMMENTS_ALL": "Generar comentarios (todos)",
+      "CONDITIONS_TOOLTIP": "{{count}} condición(es) adjuntas a este evento — clic para abrirlas en el editor de Condiciones",
+      "ADD_NEW_CONDITION": "Añadir condición",
+      "CONDITIONS_ADD_TOOLTIP": "Crea una condición para el evento seleccionado en el editor de Condiciones"
     },
     "SEARCH_BY_EXISTING": {
       "SOURCE_TYPE": "Tipo de Origen:",
@@ -946,5 +977,11 @@
     "SEARCH": "Buscar",
     "SEARCHING": "Buscando...",
     "FOUND_GUIDS": "GUIDs sin usar encontrados:"
+  },
+  "MAP_VIEWER": {
+    "LOADING": "Cargando datos del mapa…",
+    "NO_DATA": "No hay datos de mapa disponibles",
+    "SHOW": "Mostrar mapa",
+    "HIDE": "Ocultar mapa"
   }
 }
